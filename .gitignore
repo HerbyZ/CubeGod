@@ -1,0 +1,9 @@
+# Editors configuration folders
+.vscode
+.idea
+
+# Python virtual environment
+venv
+
+# Secret environment variables
+.env
