@@ -10,6 +10,6 @@ Python version - 3.9.1
 5. Execute
 
 ### Environment variables
-There is nothing here yet.
+`DISCORD_BOT_API_TOKEN` - Discord API token of the bot
 
 ###### Author - Herby
