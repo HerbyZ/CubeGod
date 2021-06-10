@@ -6,7 +6,7 @@ import config
 _hook = Webhook.Async(config.LOG_WEBHOOK_URL)
 
 
-async def execute(message):
+async def log(message):
     current_time = datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')
     log_message = f'[{current_time}]: {message}'
     

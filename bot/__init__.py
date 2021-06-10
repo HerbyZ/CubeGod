@@ -13,8 +13,10 @@ class Bot(commands.Bot):
         self.run(token)
 
     async def on_ready(self):
-        await log_hook.execute(f'Bot is logged in as {self.user.name}#{self.user.discriminator}')
+        await log_hook.log(f'Bot is logged in as {self.user.name}#{self.user.discriminator}')
 
-    async def on_message(self, message):
-        if not message.author.bot:
-            await message.channel.send(message.content)
+    async def on_command_completion(self, ctx):
+        author = f'{ctx.message.author.name}#{ctx.message.author.discriminator}'
+        log_message = f'Command {ctx.command.name} was used in {ctx.channel.mention} by {author}'
+
+        await log_hook.log(log_message)
