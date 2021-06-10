@@ -10,6 +10,11 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
         
     def launch(self, token):
+        cogs_dir = os.path.join(os.path.curdir, 'bot', 'cogs')
+        for filename in os.listdir(cogs_dir):
+            if filename.endswith('_cog.py'):
+                self.load_extension(f'bot.cogs.{filename[:-3]}')
+
         self.run(token)
 
     async def on_ready(self):
