@@ -10,7 +10,7 @@ Python version - 3.9.1
 5. Execute
 
 ### Environment variables
-`DISCORD_BOT_API_TOKEN` - Discord API token of the bot
+`DISCORD_BOT_API_TOKEN` - Discord API token of the bot \
 `LOG_WEBHOOK_URL` - URL of webhook used to logging
 
 ###### Author - Herby
