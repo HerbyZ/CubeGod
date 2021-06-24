@@ -43,7 +43,11 @@ class User(Base):
     @staticmethod
     def update(discord_id, **kwargs):
         session.query(User).filter(User.discord_id == discord_id).update(kwargs)
+        session.commit()
+        session.close()
 
     @staticmethod
     def delete(discord_id):
         session.query(User).filter(User.discord_id == discord_id).delete()
+        session.commit()
+        session.close()
