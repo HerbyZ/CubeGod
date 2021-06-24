@@ -8,3 +8,7 @@ engine = create_engine(config.DATABASE_CONNECTION_STRING, encoding='utf-8')
 session: Session = sessionmaker(bind=engine)()
 
 Base = declarative_base()
+
+from . import models
+
+Base.metadata.create_all(bind=engine)
