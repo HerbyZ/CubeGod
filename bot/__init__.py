@@ -22,6 +22,6 @@ class Bot(commands.Bot):
 
     async def on_command_completion(self, ctx):
         author = f'{ctx.message.author.name}#{ctx.message.author.discriminator}'
-        log_message = f'Command {ctx.command.name} was used in {ctx.channel.mention} by {author}'
+        log_message = f'Command {ctx.command.name} invoked. Called in {ctx.channel.mention} by {author}'
 
         await log_hook.log(log_message)

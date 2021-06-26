@@ -1,3 +1,4 @@
+from bot.webhooks.log_hook import log
 from discord.ext import commands
 
 import discord
@@ -48,6 +49,9 @@ class LevelSystemCog(commands.Cog):
             exp = user.experience
 
         User.update(user.discord_id, level=level, experience=exp)
+
+        author = f'{ctx.message.author.name}#{ctx.message.author.discriminator}'
+        await log(f'Command !setlvl was used by {author} on {member.nick} with level {level} exp {exp}')
 
 
 def setup(bot):
