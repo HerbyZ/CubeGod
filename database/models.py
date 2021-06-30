@@ -1,9 +1,31 @@
-from typing import overload
-from sqlalchemy import Column, Integer, BigInteger, DateTime
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.attributes import set_attribute
+from sqlalchemy import Column, Integer, BigInteger, DateTime, ForeignKey, Text, Boolean, update, desc
 
 import datetime
 
-from . import Base, session
+from . import Base, session, engine
+
+
+class Ban(Base):
+    __tablename__ = 'bans'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, ForeignKey('users.discord_id'))
+    user = relationship('User', back_populates='bans')
+    date = Column(DateTime, default=datetime.datetime.now)
+    is_active = Column(Boolean, default=True)
+    reason = Column(Text, nullable=True)
+
+    def set_inactive(self):
+        with session() as s:
+            s.execute(
+                update(Ban).
+                where(Ban.user_id == self.user_id).
+                values(is_active=False)
+            )
+            s.commit()
+
+        self.is_active = False
 
 
 class User(Base):
@@ -12,42 +34,54 @@ class User(Base):
     join_date = Column(DateTime, default=datetime.datetime.now)
     level = Column(Integer, default=1)
     experience = Column(Integer, default=0)
+    bans = relationship('Ban', back_populates='user', cascade='all, delete-orphan', lazy='joined',
+                        order_by=lambda: desc(Ban.date))
+    is_banned = Column(Boolean, default=False)
 
-    @staticmethod
-    def create(discord_id, join_date=datetime.datetime.now(), level=1, exp=0):
-        try:
-            User.find_one(discord_id)
-        except ValueError:
-            user = User()
-            user.discord_id = discord_id
-            user.join_date = join_date
-            user.level = level
-            user.experience = exp
-            
-            session.add(user)
-            session.commit()
-            session.close()
+    def update(self, **kwargs):
+        with session() as s:
+            for key, value in kwargs.items():
+                set_attribute(self, key, value)
 
-            return User.find_one(discord_id)
+            s.execute(
+                update(User).
+                where(User.discord_id == self.discord_id).
+                values(**kwargs)
+            )
+            s.commit()
 
-        raise ValueError(f'User with discord id {discord_id} already exists')
+    def ban(self, reason=None):
+        if not self.is_banned:
+            ban = Ban(user_id=self.discord_id, reason=reason)
 
-    @staticmethod
-    def find_one(discord_id):
-        user = session.query(User).filter(User.discord_id == discord_id).first()
-        if user is None:
-            raise ValueError(f'User with discord id {discord_id} not found')
+            self.bans.append(ban)
 
-        return user
+            # self.update(bans=self.bans, is_banned=True)
+            self.update(is_banned=True)
 
-    @staticmethod
-    def update(discord_id, **kwargs):
-        session.query(User).filter(User.discord_id == discord_id).update(kwargs)
-        session.commit()
-        session.close()
+            with session() as s:
+                s.add(ban)
+                s.commit()
+                s.refresh(self)
+        else:
+            raise ValueError(f'User is already banned')
 
-    @staticmethod
-    def delete(discord_id):
-        session.query(User).filter(User.discord_id == discord_id).delete()
-        session.commit()
-        session.close()
+    def unban(self):
+        if self.is_banned:
+            self.update(is_banned=self.is_banned)
+            self.is_banned = False
+
+            ban = self.bans[0]
+            ban.set_inactive()
+        else:
+            raise ValueError(f'User is not banned')
+
+    def get_bans(self):
+        with session() as s:
+            bans = s.query(Ban).filter(Ban.user_id == self.discord_id).\
+                order_by(Ban.date.desc()).all()
+
+        return bans
+
+
+Base.metadata.create_all(bind=engine)

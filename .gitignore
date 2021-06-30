@@ -10,3 +10,6 @@ venv
 
 # Python cache files
 __pycache__
+
+# Pytest cache files
+.pytest_cache
