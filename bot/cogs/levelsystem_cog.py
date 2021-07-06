@@ -4,7 +4,6 @@ from discord.ext import commands
 import discord
 
 from database.managers import UserManager
-from database.models import User
 
 
 class LevelSystemCog(commands.Cog):
