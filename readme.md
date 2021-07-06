@@ -14,4 +14,8 @@ Python version - 3.9.1
 `LOG_WEBHOOK_URL` - URL of webhook used to logging \
 `DATABASE_CONNECTION_STRING` - Database connection URI
 
+### Testing
+1. Activate virtual environment
+2. Run tests using `pytest`
+
 ###### Author - Herby
