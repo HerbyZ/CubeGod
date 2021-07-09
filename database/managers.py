@@ -1,7 +1,9 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.attributes import set_attribute
 from sqlalchemy import update
 
 from .models import User
+from .exceptions import ObjectNotFoundError, ObjectAlreadyExistsError
 from . import session
 
 
@@ -19,7 +21,11 @@ class UserManager:
                     values(**kwargs)
                 )
 
-            s.commit()
+            try:
+                s.commit()
+            except IntegrityError:
+                raise ObjectAlreadyExistsError(f'User with discord id {discord_id} already exists')
+
             s.refresh(user)
 
         for key, value in kwargs.items():
@@ -33,7 +39,7 @@ class UserManager:
             user = s.get(User, attributes)
 
         if user is None:
-            raise ValueError(f'User not found')
+            raise ObjectNotFoundError(f'User with attrs {attributes=} is not found')
 
         return user
 

@@ -56,7 +56,6 @@ class User(Base):
 
             self.bans.append(ban)
 
-            # self.update(bans=self.bans, is_banned=True)
             self.update(is_banned=True)
 
             with session() as s:

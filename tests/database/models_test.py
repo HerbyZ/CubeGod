@@ -1,3 +1,4 @@
+from database.exceptions import ObjectNotFoundError, ObjectAlreadyExistsError
 from database.managers import UserManager
 from database.models import User
 
@@ -7,12 +8,11 @@ import pytest
 
 @pytest.fixture
 def test_user_model():
-    user = User()
-    user.discord_id = 1234567891234567
-    user.level = 24
-    user.experience = 79
-
-    return user
+    return User(
+        discord_id=1234567891234567,
+        level=24,
+        experience=79
+    )
 
 
 # User model tests
@@ -26,6 +26,12 @@ def test_create_user(test_user_model):
     assert user.level == test_user_model.level
     assert user.experience == test_user_model.experience
 
+    try:
+        UserManager.create(test_user_model.discord_id)
+        assert False
+    except ObjectAlreadyExistsError:
+        assert True
+
 
 def test_find_user(test_user_model):
     user = UserManager.find_one(test_user_model.discord_id)
@@ -38,7 +44,7 @@ def test_find_user(test_user_model):
         # Try to find user that does not exist
         UserManager.find_one(921939219392193219)
         assert False
-    except ValueError:
+    except ObjectNotFoundError:
         assert True
 
 
@@ -61,7 +67,7 @@ def test_delete_user(test_user_model):
     try:
         UserManager.find_one(test_user_model.discord_id)
         assert False
-    except ValueError:
+    except ObjectNotFoundError:
         assert True
 
 

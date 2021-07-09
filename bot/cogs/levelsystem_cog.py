@@ -1,9 +1,10 @@
-from bot.webhooks.log_hook import log
+from database.exceptions import ObjectNotFoundError
+from database.managers import UserManager
 from discord.ext import commands
 
 import discord
 
-from database.managers import UserManager
+from ..webhooks.log_hook import log
 
 
 class LevelSystemCog(commands.Cog):
@@ -26,7 +27,7 @@ class LevelSystemCog(commands.Cog):
                 new_level += 1
 
             user.update(level=new_level, experience=new_exp)
-        except ValueError:
+        except ObjectNotFoundError:
             UserManager.create(author_id)
 
     @commands.command('rank')
@@ -38,7 +39,7 @@ class LevelSystemCog(commands.Cog):
             user = UserManager.find_one(member.id)
             # TODO: Create embed for !rank command
             await ctx.send(f'**Юзер {member.nick}. Лвл - {user.level}, эксп - {user.experience}.**')
-        except ValueError:
+        except ObjectNotFoundError:
             await ctx.send(f'**Юзер не найден :(**')
 
     @commands.command('setlvl')
