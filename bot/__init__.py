@@ -8,7 +8,7 @@ from .webhooks.log_hook import log
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.modules = ['test1', 'test2', 'test3']
+        self.modules = []
         
     def launch(self, token):
         cogs_dir = os.path.join(os.path.curdir, 'bot', 'cogs')
