@@ -24,6 +24,7 @@ class LevelSystemCog(commands.Cog):
 
             if new_exp >= 100:
                 new_level += 1
+                new_exp = 0
 
             user.update(level=new_level, experience=new_exp)
         except ValueError:
