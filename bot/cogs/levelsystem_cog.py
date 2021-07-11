@@ -25,6 +25,7 @@ class LevelSystemCog(commands.Cog):
 
             if new_exp >= 100:
                 new_level += 1
+                new_exp = 0
 
             user.update(level=new_level, experience=new_exp)
         except ObjectNotFoundError:
@@ -38,7 +39,7 @@ class LevelSystemCog(commands.Cog):
         try:
             user = UserManager.find_one(member.id)
             # TODO: Create embed for !rank command
-            await ctx.send(f'**Юзер {member.nick}. Лвл - {user.level}, эксп - {user.experience}.**')
+            await ctx.send(f'**Юзер {member.name}. Лвл - {user.level}, эксп - {user.experience}.**')
         except ObjectNotFoundError:
             await ctx.send(f'**Юзер не найден :(**')
 
