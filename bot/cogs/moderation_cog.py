@@ -25,7 +25,7 @@ class ModerationCog(commands.Cog):
 
     @commands.command('kick')
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member, reason=None):
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
         await ctx.message.delete()
         await member.kick(reason=reason)
 
@@ -34,7 +34,7 @@ class ModerationCog(commands.Cog):
 
     @commands.command('ban')
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: discord.Member, reason=None):
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
         author = ctx.message.author
         author_name = f'{author.name}#{author.discriminator}'
         member_name = f'{member.name}#{member.discriminator}'
