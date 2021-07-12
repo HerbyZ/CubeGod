@@ -97,3 +97,23 @@ def test_bans(test_user_model):
     assert bans[1].date > test_date2
 
     UserManager.delete(test_user_model.discord_id)
+
+
+def test_imprisonments(test_user_model):
+    user = UserManager.create(test_user_model.discord_id)
+
+    test_reason = 'test reason'
+
+    user.imprison(test_reason)
+    user.end_imprisonment()
+    user.imprison(test_reason*100)
+
+    imprisonments = user.get_imprisonments()
+
+    assert imprisonments[0].is_active
+    assert imprisonments[0].reason == test_reason*100
+
+    assert not imprisonments[1].is_active
+    assert imprisonments[1].reason == test_reason
+
+    UserManager.delete(user.discord_id)
