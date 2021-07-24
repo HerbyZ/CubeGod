@@ -1,8 +1,9 @@
+from database.exceptions import ObjectNotFoundError
+from database.managers import UserManager
 from discord.ext import commands
 
 import discord
 
-from database.managers import UserManager
 from ..webhooks.log_hook import log
 
 
@@ -18,13 +19,13 @@ class ModerationCog(commands.Cog):
 
         await ctx.message.delete()
         await channel.purge(limit=amount)
-
+        
         author = f'{ctx.message.author.name}#{ctx.message.author.discriminator}'
         await log(f'Command !clear was used in channel {channel} by user {author} with amount {amount}')
 
     @commands.command('kick')
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member, reason=None):
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
         await ctx.message.delete()
         await member.kick(reason=reason)
 
@@ -33,7 +34,7 @@ class ModerationCog(commands.Cog):
 
     @commands.command('ban')
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: discord.Member, reason=None):
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
         author = ctx.message.author
         author_name = f'{author.name}#{author.discriminator}'
         member_name = f'{member.name}#{member.discriminator}'
@@ -42,7 +43,7 @@ class ModerationCog(commands.Cog):
         # Ban user in db
         try:
             user = UserManager.find_one(member.id)
-        except ValueError:
+        except ObjectNotFoundError:
             user = UserManager.create(member.id)
 
         if not user.is_banned:
@@ -69,7 +70,7 @@ class ModerationCog(commands.Cog):
             user = UserManager.find_one(user_id)
             if not user.is_banned:
                 return await author.send(f'User is not banned.')
-        except ValueError:
+        except ObjectNotFoundError:
             await author.send(f'User not found in database, trying to unban on server...')
 
         user = await self.bot.fetch_user(user_id)
@@ -89,7 +90,7 @@ class ModerationCog(commands.Cog):
 
         try:
             user = UserManager.find_one(user_id)
-        except ValueError:
+        except ObjectNotFoundError:
             return await author.send(f'User with id {user_id} not found.')
 
         bans = user.get_bans()
