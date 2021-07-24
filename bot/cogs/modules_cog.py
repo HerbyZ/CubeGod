@@ -7,11 +7,6 @@ class ModulesCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        for module in self.bot.modules:
-            self.bot.load_module(module)
-
     @commands.command('load-module')
     @commands.has_permissions(manage_guild=True)
     async def _load_module_command(self, ctx, module_name):

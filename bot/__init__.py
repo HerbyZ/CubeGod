@@ -9,12 +9,18 @@ class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.modules = []
+        self.preloaded_modules = kwargs['preloaded_modules']
         
     def launch(self, token):
+        # load cogs
         cogs_dir = os.path.join(os.path.curdir, 'bot', 'cogs')
         for filename in os.listdir(cogs_dir):
             if filename.endswith('_cog.py'):
                 self.load_extension(f'bot.cogs.{filename[:-3]}')
+
+        # load preloaded modules
+        for module in self.preloaded_modules:
+            self.load_module(module)
 
         self.run(token)
 
