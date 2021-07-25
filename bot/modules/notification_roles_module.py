@@ -1,6 +1,8 @@
 from discord.ext import commands
 from discord import utils
 
+import config
+
 
 class NotificationRolesModule(commands.Cog):
     def __init__(self, bot):
@@ -8,15 +10,17 @@ class NotificationRolesModule(commands.Cog):
 
         # Change to your emojis and role ids
         self._roles = {
-            '❤️': 731862587683242064,
-            '🎮': 731876639255822386,
-            '🍩': 731877205306507274
+            '❤️': 868532368569421845,
+            '🎮': 868532411930132520,
+            '🍩': 868532440799526922
         }
+        # Change to your message id
+        self._message_id = config.NOTIFICATION_ROLES_MESSAGE_ID
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         message_id = payload.message_id
-        if message_id != 731877822930354268:
+        if message_id != self._message_id:
             return
 
         channel = self._bot.get_channel(payload.channel_id)
@@ -37,7 +41,7 @@ class NotificationRolesModule(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         message_id = payload.message_id
-        if message_id != 731877822930354268:
+        if message_id != self._message_id:
             return
 
         channel = self._bot.get_channel(payload.channel_id)
