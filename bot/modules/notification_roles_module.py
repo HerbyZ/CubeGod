@@ -10,9 +10,9 @@ class NotificationRolesModule(commands.Cog):
 
         # Change to your emojis and role ids
         self._roles = {
-            '❤️': 868532368569421845,
-            '🎮': 868532411930132520,
-            '🍩': 868532440799526922
+            '❤️': 731862587683242064,
+            '🎮': 731876639255822386,
+            '🍩': 731877205306507274
         }
         # Change to your message id
         self._message_id = config.NOTIFICATION_ROLES_MESSAGE_ID
