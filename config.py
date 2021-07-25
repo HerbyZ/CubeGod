@@ -9,5 +9,8 @@ LOG_WEBHOOK_URL = os.getenv('LOG_WEBHOOK_URL')
 
 DATABASE_CONNECTION_STRING = os.getenv('DATABASE_CONNECTION_STRING')
 
-# Prison bot module
+# Notification roles module
+NOTIFICATION_ROLES_MESSAGE_ID = int(os.getenv('NOTIFICATION_ROLES_MESSAGE_ID'))
+
+# Prison module
 PRISONER_ROLE_ID = os.getenv('PRISONER_ROLE_ID')
