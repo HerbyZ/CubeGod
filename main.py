@@ -1,9 +1,9 @@
-import discord
-
 from bot import Bot
 
-import logging
 import config
+import database
+import discord
+import logging
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
@@ -15,6 +15,7 @@ bot = Bot(command_prefix='!', intents=discord.Intents.all(), preloaded_modules=p
 
 
 def main():
+    database.init()
     bot.launch(config.BOT_TOKEN)
 
 

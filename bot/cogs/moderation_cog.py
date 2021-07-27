@@ -93,7 +93,7 @@ class ModerationCog(commands.Cog):
         except ObjectNotFoundError:
             return await author.send(f'User with id {user_id} not found.')
 
-        bans = user.get_bans()
+        bans = user.bans
         if len(bans) == 0:
             return await author.send(f'User with id {user_id} has no bans.')
 
