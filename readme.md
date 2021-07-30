@@ -13,7 +13,8 @@ Python version - 3.9.1
 `DISCORD_BOT_API_TOKEN` - Discord API token of the bot \
 `LOG_WEBHOOK_URL` - URL of webhook used to logging \
 `DATABASE_CONNECTION_STRING` - Database URI \
-`NOTIFICATION_ROLES_MESSAGE_ID`
+`NOTIFICATION_ROLES_MESSAGE_ID` \
+`EXCHANGE_REST_API_KEY` - API key for https://exchangeratesapi.io/
 
 ### Testing
 1. Activate virtual environment

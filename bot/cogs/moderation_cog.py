@@ -61,6 +61,8 @@ class ModerationCog(commands.Cog):
     async def unban(self, ctx, user_id):
         author = ctx.message.author
 
+        await ctx.message.delete()
+
         try:
             int(user_id)
         except ValueError:
@@ -70,13 +72,19 @@ class ModerationCog(commands.Cog):
             user = UserManager.find_one(user_id)
             if not user.is_banned:
                 return await author.send(f'User is not banned.')
+
+            user.unban()
         except ObjectNotFoundError:
             await author.send(f'User not found in database, trying to unban on server...')
 
         user = await self.bot.fetch_user(user_id)
-        await ctx.guild.unban(user)
+        guild = ctx.guild
 
-        await ctx.send('User is not banned')
+        try:
+            await guild.fetch_ban(user)
+            await guild.unban(user)
+        except discord.NotFound:
+            await author.send('User is not banned')
 
     @commands.command('getbans')
     @commands.has_permissions(ban_members=True)
