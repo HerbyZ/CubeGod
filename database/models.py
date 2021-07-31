@@ -4,7 +4,6 @@ import mongoengine
 import datetime
 
 
-# TODO: Test User model
 class User(mongoengine.Document):
     discord_id = fields.LongField(required=True, primary_key=True)
     join_date = fields.DateTimeField(default=datetime.datetime.now)
@@ -56,7 +55,7 @@ class User(mongoengine.Document):
         else:
             raise ValueError('User already prisoned')
 
-    def end_imprisonment(self, reason=None):
+    def end_imprisonment(self):
         if self.is_prisoned:
             imprisonment = self.imprisonments[0]
             imprisonment.set_inactive()
@@ -69,7 +68,6 @@ class User(mongoengine.Document):
     meta = {'db_alias': 'default', 'collection': 'users'}
 
 
-# TODO: Test Ban model
 class Ban(mongoengine.Document):
     date = fields.DateTimeField(default=datetime.datetime.now)
     end_date = fields.DateTimeField(null=True)
@@ -85,7 +83,6 @@ class Ban(mongoengine.Document):
     meta = {'db_alias': 'default', 'collection': 'bans'}
 
 
-# TODO: Test Imprisonment model
 class Imprisonment(mongoengine.Document):
     user = fields.ReferenceField('User', reverse_delete_rule=mongoengine.CASCADE)
     date = fields.DateTimeField(default=datetime.datetime.now)

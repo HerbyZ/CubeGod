@@ -1,7 +1,7 @@
-import datetime
 from dhooks import Webhook
 
 import config
+import datetime
 
 _hook = Webhook.Async(config.LOG_WEBHOOK_URL)
 
