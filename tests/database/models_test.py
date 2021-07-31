@@ -1,4 +1,3 @@
-import config
 from database.exceptions import ObjectNotFoundError, ObjectAlreadyExistsError
 from database.managers import UserManager
 from dataclasses import dataclass
