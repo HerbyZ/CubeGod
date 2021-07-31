@@ -36,6 +36,7 @@ def test_create_user(test_user_model):
     assert user.discord_id == test_user_model.discord_id
     assert user.level == test_user_model.level
     assert user.experience == test_user_model.experience
+    assert user.on_server
 
     try:
         UserManager.create(test_user_model.discord_id)
@@ -50,6 +51,7 @@ def test_find_user(test_user_model):
     assert user.discord_id == test_user_model.discord_id
     assert user.level == test_user_model.level
     assert user.experience == test_user_model.experience
+    assert user.on_server
 
     try:
         # Try to find user that does not exist
@@ -64,19 +66,21 @@ def test_update_user(test_user_model):
     new_exp = 20
 
     user = UserManager.find_one(test_user_model.discord_id)
-    user.update(level=new_level, experience=new_exp)
+    user.update(level=new_level, experience=new_exp, on_server=False)
 
     assert user.level == new_level
     assert user.experience == new_exp
+    assert not user.on_server
 
     new_level = 8
     new_exp = 74
 
-    UserManager.update(user.discord_id, level=8, experience=new_exp)
+    UserManager.update(user.discord_id, level=8, experience=new_exp, on_server=True)
     user = UserManager.find_one(user.discord_id)
 
     assert user.level == new_level
     assert user.experience == new_exp
+    assert user.on_server
 
 
 def test_delete_user(test_user_model):

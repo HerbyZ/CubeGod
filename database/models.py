@@ -9,6 +9,7 @@ class User(mongoengine.Document):
     join_date = fields.DateTimeField(default=datetime.datetime.now)
     level = fields.IntField(default=1, min_value=0)
     experience = fields.IntField(default=0, min_value=0, max_value=100)
+    on_server = fields.BooleanField(default=True)
     is_banned = fields.BooleanField(default=False)
     is_prisoned = fields.BooleanField(default=False)
 
