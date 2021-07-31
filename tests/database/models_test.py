@@ -69,6 +69,15 @@ def test_update_user(test_user_model):
     assert user.level == new_level
     assert user.experience == new_exp
 
+    new_level = 8
+    new_exp = 74
+
+    UserManager.update(user.discord_id, level=8, experience=new_exp)
+    user = UserManager.find_one(user.discord_id)
+
+    assert user.level == new_level
+    assert user.experience == new_exp
+
 
 def test_delete_user(test_user_model):
     UserManager.delete(test_user_model.discord_id)
