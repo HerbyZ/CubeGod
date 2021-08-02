@@ -74,7 +74,7 @@ class Ban(mongoengine.Document):
     end_date = fields.DateTimeField(null=True)
     reason = fields.StringField(null=True)
     is_active = fields.BooleanField(default=True)
-    user = fields.ReferenceField('User', reverse_delete_rule=mongoengine.CASCADE)
+    user = fields.ReferenceField(User, reverse_delete_rule=mongoengine.CASCADE)
 
     def set_inactive(self):
         self.is_active = False
@@ -85,7 +85,7 @@ class Ban(mongoengine.Document):
 
 
 class Imprisonment(mongoengine.Document):
-    user = fields.ReferenceField('User', reverse_delete_rule=mongoengine.CASCADE)
+    user = fields.ReferenceField(User, reverse_delete_rule=mongoengine.CASCADE)
     date = fields.DateTimeField(default=datetime.datetime.now)
     end_date = fields.DateTimeField(null=True)
     is_active = fields.BooleanField(default=True)
