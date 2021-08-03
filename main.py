@@ -9,7 +9,10 @@ logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.INFO)
 
-preloaded_modules = []
+preloaded_modules = [
+    'exchange_rates',
+    'notification_roles'
+]
 
 bot = Bot(command_prefix='!', intents=discord.Intents.all(), preloaded_modules=preloaded_modules)
 
