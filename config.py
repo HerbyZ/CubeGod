@@ -1,10 +1,14 @@
 from dotenv import load_dotenv
+
 import os
+import pytz
 
 load_dotenv()
 
 
 BASE_DIR = os.path.abspath(os.path.curdir)
+
+TIMEZONE = pytz.timezone('Europe/Moscow')  # Moscow time UTC+3:00
 
 # Discord
 

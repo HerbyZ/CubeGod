@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import database
 import datetime
 import pytest
+import config
 
 
 @dataclass
@@ -105,8 +106,8 @@ def test_bans(test_user_model):
     user = UserManager.find_one(user.discord_id)
     bans = user.bans
 
-    test_date1 = datetime.datetime.now() - datetime.timedelta(minutes=-10)
-    test_date2 = datetime.datetime.now() - datetime.timedelta(minutes=10)
+    test_date1 = datetime.datetime.now(config.TIMEZONE) - datetime.timedelta(minutes=-10)
+    test_date2 = datetime.datetime.now(config.TIMEZONE) - datetime.timedelta(minutes=10)
 
     assert bans[0].is_active
     assert bans[0].reason is None

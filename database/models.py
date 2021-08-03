@@ -2,6 +2,7 @@ from mongoengine import fields
 
 import mongoengine
 import datetime
+import config
 
 
 class User(mongoengine.Document):
@@ -78,7 +79,7 @@ class Ban(mongoengine.Document):
 
     def set_inactive(self):
         self.is_active = False
-        self.end_date = datetime.datetime.now()
+        self.end_date = datetime.datetime.now(config.TIMEZONE)
         self.save()
 
     meta = {'db_alias': 'default', 'collection': 'bans'}
@@ -93,7 +94,7 @@ class Imprisonment(mongoengine.Document):
 
     def set_inactive(self):
         self.is_active = False
-        self.end_date = datetime.datetime.now()
+        self.end_date = datetime.datetime.now(config.TIMEZONE)
         self.save()
 
     meta = {'db_alias': 'default', 'collection': 'imprisonments'}
