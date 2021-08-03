@@ -15,7 +15,7 @@ class ExchangeRatesModule(commands.Cog):
 
     @tasks.loop(minutes=10)
     async def _check_time_loop(self):
-        now = datetime.datetime.now().time()
+        now = datetime.datetime.now(config.TIMEZONE).time()
         time_from = datetime.time(hour=10)
         time_to = datetime.time(hour=10, minute=10)
 

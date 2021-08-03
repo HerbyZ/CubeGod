@@ -9,7 +9,7 @@ from ..webhooks.log_hook import log
 
 class ModerationCog(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self._bot = bot
 
     @commands.command('clear')
     @commands.has_permissions(manage_messages=True)
@@ -77,7 +77,7 @@ class ModerationCog(commands.Cog):
         except ObjectNotFoundError:
             await author.send(f'User not found in database, trying to unban on server...')
 
-        user = await self.bot.fetch_user(user_id)
+        user = await self._bot.fetch_user(user_id)
         guild = ctx.guild
 
         try:

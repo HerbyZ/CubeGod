@@ -1,16 +1,22 @@
 from dotenv import load_dotenv
+
 import os
+import pytz
 
 load_dotenv()
 
 
 BASE_DIR = os.path.abspath(os.path.curdir)
 
+TIMEZONE = pytz.timezone('Europe/Moscow')  # Moscow time UTC+3:00
+
 # Discord
 
 BOT_TOKEN = os.getenv('DISCORD_BOT_API_TOKEN')
 
 LOG_WEBHOOK_URL = os.getenv('LOG_WEBHOOK_URL')
+
+ON_JOIN_ROLE_ID = int(os.getenv('ON_JOIN_ROLE_ID'))
 
 
 # Bot modules

@@ -14,7 +14,8 @@ Python version - 3.9.1
 `LOG_WEBHOOK_URL` - URL of webhook used to logging \
 `DATABASE_CONNECTION_STRING` - Database URI \
 `NOTIFICATION_ROLES_MESSAGE_ID` \
-`EXCHANGE_REST_API_KEY` - API key for https://exchangeratesapi.io/
+`EXCHANGE_REST_API_KEY` - API key for https://exchangeratesapi.io/ \
+`ON_JOIN_ROLE_ID` - ID of role that will be given to user when joining the server
 
 ### Testing
 1. Activate virtual environment
